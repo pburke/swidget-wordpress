@@ -64,10 +64,11 @@ function init_cart()
 
   function getCart($site)
   {
+
     if (session_status() == PHP_SESSION_NONE) {
       session_start();
     }
-    
+
     $name = "swidget_cart_$site";
     if(isset($_SESSION[$name]))
     {
@@ -82,9 +83,12 @@ function init_cart()
       $result = curl_exec($ch);
       $json = json_decode($result);
 
-      if($json['success'])
+      if($json->success)
       {
-        $cart = intval($json['cart']);
+
+        $cart = $json->cart;
+
+
         $_SESSION[$name] = $cart;
         return $cart;
       }
