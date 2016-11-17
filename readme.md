@@ -6,6 +6,8 @@ This is a wordpress plugin to display swidgets.  It simplifies the process for a
 
 To install download this project and copy the "swidget" folder into your wordpress plugin directory located at /wp-content/plugins
 
+## Shortcodes
+
 ### Quick Checkout
 
 ```
