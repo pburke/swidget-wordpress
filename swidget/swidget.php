@@ -72,11 +72,8 @@ function init_cart()
     $name = "swidget_cart_$site";
     if(isset($_SESSION[$name]))
     {
-      return $_SESSION[$name];
-    }
-    else
-    {
-      $url = "https://sales.carnegiemuseums.org/api/v1/cart/create?site=$site";
+      $cart = $_SESSION[$name];
+      $url = "https://sales.carnegiemuseums.org/api/v1/cart/check?site=$site&cart=$cart&recreate=true";
       $ch = curl_init();
       curl_setopt($ch, CURLOPT_URL, $url);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -85,14 +82,37 @@ function init_cart()
 
       if($json->success)
       {
-
-        $cart = $json->cart;
-
-
-        $_SESSION[$name] = $cart;
-        return $cart;
+        if($json->valid)
+        {
+          return $cart;
+        }
+        else {
+           if(isset($json->cart))
+           {
+             return $json->cart;
+           }
+        }
       }
+
     }
+
+    $url = "https://sales.carnegiemuseums.org/api/v1/cart/create?site=$site";
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $result = curl_exec($ch);
+    $json = json_decode($result);
+
+    if($json->success)
+    {
+
+      $cart = $json->cart;
+
+
+      $_SESSION[$name] = $cart;
+      return $cart;
+    }
+
     return null;
   }
 
