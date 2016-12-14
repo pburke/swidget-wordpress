@@ -74,10 +74,7 @@ function init_cart()
     {
       $cart = $_SESSION[$name];
       $url = "https://sales.carnegiemuseums.org/api/v1/cart/check?site=$site&cart=$cart&recreate=true";
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, $url);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-      $result = curl_exec($ch);
+      $result = curl_call($url);
       $json = json_decode($result);
 
       if($json->success)
@@ -97,10 +94,7 @@ function init_cart()
     }
 
     $url = "https://sales.carnegiemuseums.org/api/v1/cart/create?site=$site";
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    $result = curl_exec($ch);
+    $result = curl_call($url);
     $json = json_decode($result);
 
     if($json->success)
@@ -174,5 +168,20 @@ EOT;
 
   add_shortcode('swcart', 'swidget_cart');
   add_shortcode('swaddtocart', 'swidget_addtocart');
+
+}
+
+function curl_call($url)
+{
+
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_USERAGENT, "Wordpress Swidget");
+
+  $result = curl_exec($ch);
+  curl_close($ch);
+
+  return $result;
 
 }
