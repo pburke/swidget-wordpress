@@ -8,12 +8,12 @@ Author: Carnegie Museums of Pittsburgh
 Author URI: http://www.carnegiemuseums.org
 License: GPLv2 or later
 ******************************************************************************/
-
+$domain = "sales.carnegiemuseums.org";
 //Initialize
 if( ! function_exists('swidget_shortcodes_init') ){
   function swidget_scripts_init()
   {
-    wp_enqueue_script('swidget-script',"https://sales.carnegiemuseums.org/widget/ecommerce-widget.js",array( 'jquery' ));
+    wp_enqueue_script('swidget-script',"https://$domain/widget/ecommerce-widget.js",array( 'jquery' ));
   }
   function swidget_shortcodes_init()
   {
@@ -73,7 +73,7 @@ function init_cart()
     if(isset($_SESSION[$name]))
     {
       $cart = $_SESSION[$name];
-      $url = "https://sales!.carnegiemuseums.org/api/v1/cart/check?site=$site&cart=$cart&recreate=true";
+      $url = "https://$domain/api/v1/cart/check?site=$site&cart=$cart&recreate=true";
       $result = curl_call($url);
       $json = json_decode($result);
 
@@ -93,7 +93,7 @@ function init_cart()
 
     }
 
-    $url = "https://sales!.carnegiemuseums.org/api/v1/cart/create?site=$site";
+    $url = "https://$domain/api/v1/cart/create?site=$site";
     $result = curl_call($url);
     $json = json_decode($result);
 
