@@ -1,7 +1,7 @@
 <?php
 /******************************************************************************
 Plugin Name: Swidget
-Plugin URI: http://sales.carnegiemuseums.org
+Plugin URI: https://github.com/CMP-Studio/swidget-wordpress
 Description: Siriusware Widget
 Version: 0.1
 Author: Carnegie Museums of Pittsburgh
