@@ -3,7 +3,7 @@
 Plugin Name: Swidget
 Plugin URI: https://github.com/CMP-Studio/swidget-wordpress
 Description: Siriusware Widget
-Version: 0.1
+Version: 0.2
 Author: Carnegie Museums of Pittsburgh
 Author URI: http://www.carnegiemuseums.org
 License: GPLv2 or later
