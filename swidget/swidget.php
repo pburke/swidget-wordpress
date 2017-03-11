@@ -24,11 +24,23 @@ if( ! function_exists('swidget_shortcodes_init') ){
   }
   function swidget_shortcodes_init()
   {
+    init_session();
     init_checkout();
     init_cart();
   }
   add_action('init', 'swidget_shortcodes_init');
   add_action('wp_enqueue_scripts', 'swidget_scripts_init');
+}
+
+//Session
+function init_session()
+{
+  if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+  }
+  if(session_id() == '') {
+    session_start();
+  }
 }
 
 //The checkout widget
@@ -72,9 +84,6 @@ function init_cart()
   function getCart($site)
   {
 
-    if (session_status() == PHP_SESSION_NONE) {
-      session_start();
-    }
 
     $name = "swidget_cart_$site";
     if(isset($_SESSION[$name]))
@@ -138,7 +147,7 @@ function init_cart()
       jQuery(".$class").swCart($cart);
     });
   </script>
-  <div class="swidget-cart-holder $class"></div>
+  <div class="swidget-cart-holder $class" data-cart="$cart"></div>
 EOT;
 
   return $out;
@@ -167,7 +176,7 @@ EOT;
       jQuery(".$class").swAddToCart($cart, $site, $item);
     });
   </script>
-  <div class="swidget-holder $class"></div>
+  <div class="swidget-holder $class" data-cart="$cart"></div>
 EOT;
 
     return $out;
