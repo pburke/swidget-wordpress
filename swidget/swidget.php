@@ -3,7 +3,7 @@
 Plugin Name: Swidget
 Plugin URI: https://github.com/CMP-Studio/swidget-wordpress
 Description: Siriusware Widget
-Version: 0.3
+Version: 0.6
 Author: Carnegie Museums of Pittsburgh
 Author URI: http://www.carnegiemuseums.org
 License: GPLv2 or later
@@ -27,16 +27,10 @@ if( ! function_exists('swidget_shortcodes_init') ){
     init_checkout();
     init_cart();
   }
-  add_action('init', 'init_session', 1);
   add_action('init', 'swidget_shortcodes_init');
   add_action('wp_enqueue_scripts', 'swidget_scripts_init');
 }
 
-function init_session()
-{
-	session_id('swidget_wp');
-	session_start();
-}
 
 
 //The checkout widget
@@ -75,14 +69,10 @@ EOT;
 //Cart based functions
 function init_cart()
 {
-
-
   function getCart($site)
   {
-
-
     $name = "swidget_cart_$site";
-    if(!isset($_SESSION[$name])
+    if(!isset($_COOKIE[$name]))
     {
 	  //No cart: must create one
       $url = getURL("/api/v1/cart/create?site=$site");
@@ -92,13 +82,13 @@ function init_cart()
       if($json->success)
       {
         $cart = $json->cart;
-        $_SESSION[$name] = $cart;
+        setcookie($name, $cart, time() + 2 * DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
         return $cart;
       }
     }
     else
     {
-	  $cart = $_SESSION[$name];
+	  $cart = $_COOKIE[$name];
       $url = getURL("/api/v1/cart/check?site=$site&cart=$cart&recreate=true");
       $result = curl_call($url);
       $json = json_decode($result);
@@ -114,7 +104,7 @@ function init_cart()
            if(isset($json->cart))
            {
 			//Cart expired but a new one was created
-			 $_SESSION[$name] = $json->cart;
+			 setcookie($name, $json->cart, time() + 2 * DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
              return $json->cart;
            }
         }
@@ -166,7 +156,7 @@ EOT;
 
     if(!isset($cart)) return "";
 
-    $class = "swidget_$site_$item";
+    $class = "swidget_$site" . "_" . $item;
 
     $out = <<<EOT
   <script>
