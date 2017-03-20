@@ -27,8 +27,15 @@ if( ! function_exists('swidget_shortcodes_init') ){
     init_checkout();
     init_cart();
   }
+  add_action('init', 'init_session', 1);
   add_action('init', 'swidget_shortcodes_init');
   add_action('wp_enqueue_scripts', 'swidget_scripts_init');
+}
+
+function init_session()
+{
+	session_id('swidget_wp');
+	session_start();
 }
 
 
@@ -75,8 +82,9 @@ function init_cart()
 
 
     $name = "swidget_cart_$site";
-    if( false === ($cart = get_transient($name)))
+    if(!isset($_SESSION[$name])
     {
+	  //No cart: must create one
       $url = getURL("/api/v1/cart/create?site=$site");
       $result = curl_call($url);
       $json = json_decode($result);
@@ -84,12 +92,13 @@ function init_cart()
       if($json->success)
       {
         $cart = $json->cart;
-        set_transient($name, $cart, 12 * HOUR_IN_SECONDS);
+        $_SESSION[$name] = $cart;
         return $cart;
       }
     }
     else
     {
+	  $cart = $_SESSION[$name];
       $url = getURL("/api/v1/cart/check?site=$site&cart=$cart&recreate=true");
       $result = curl_call($url);
       $json = json_decode($result);
@@ -98,11 +107,14 @@ function init_cart()
       {
         if($json->valid)
         {
+		//Cart is still valid
           return $cart;
         }
         else {
            if(isset($json->cart))
            {
+			//Cart expired but a new one was created
+			 $_SESSION[$name] = $json->cart;
              return $json->cart;
            }
         }
