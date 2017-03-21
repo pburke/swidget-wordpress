@@ -24,6 +24,7 @@ if( ! function_exists('swidget_shortcodes_init') ){
   }
   function swidget_shortcodes_init()
   {
+    setcookie("swidget_version", "0.6.001", time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
     init_checkout();
     init_cart();
   }
@@ -50,13 +51,13 @@ function init_checkout()
     $class = "swidget_$site_$item";
 
     $out = <<<EOT
-  <script>
+    <script>
     jQuery( document ).ready(function(){
       jQuery(".$class").swQuickCheckout($site, $item);
     });
-  </script>
-  <div class="swidget-holder $class"></div>
-EOT;
+    </script>
+    <div class="swidget-holder $class"></div>
+    EOT;
 
     return $out;
   }
@@ -74,21 +75,19 @@ function init_cart()
     $name = "swidget_cart_$site";
     if(!isset($_COOKIE[$name]))
     {
-	  //No cart: must create one
+      //No cart: must create one
       $url = getURL("/api/v1/cart/create?site=$site");
       $result = curl_call($url);
       $json = json_decode($result);
 
       if($json->success)
       {
-        $cart = $json->cart;
-        setcookie($name, $cart, time() + 2 * DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
-        return $cart;
+        return saveCart($name, $json->cart);
       }
     }
     else
     {
-	  $cart = $_COOKIE[$name];
+      $cart = $_COOKIE[$name];
       $url = getURL("/api/v1/cart/check?site=$site&cart=$cart&recreate=true");
       $result = curl_call($url);
       $json = json_decode($result);
@@ -97,21 +96,34 @@ function init_cart()
       {
         if($json->valid)
         {
-		//Cart is still valid
+          //Cart is still valid
           return $cart;
         }
         else {
-           if(isset($json->cart))
-           {
-			//Cart expired but a new one was created
-			 setcookie($name, $json->cart, time() + 2 * DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
-             return $json->cart;
-           }
+          if(isset($json->cart))
+          {
+            return saveCart($name, $json->cart);
+          }
         }
       }
     }
 
     return null;
+  }
+
+  function saveCart($name, $cart)
+  {
+    if(isset($_COOKIE[$name]))
+    {
+      if(isset($_COOKIE[$name . "_update"]))
+      {
+        $lastUpdate = intval($_COOKIE[$name . "_update"]);
+        if(abs($lastUpdate - time()) <= 30*1000) return $_COOKIE[$name];
+      }
+    }
+    setcookie($name . "_update", time(), time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
+    setcookie($name, $cart, time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
+    return $cart;
   }
 
   function swidget_cart($atts = [], $content = null, $tag='')
@@ -130,15 +142,15 @@ function init_cart()
     $class = "swidget_cart_$cart";
 
     $out = <<<EOT
-  <script>
+    <script>
     jQuery( document ).ready(function(){
       jQuery(".$class").swCart($cart);
     });
-  </script>
-  <div class="swidget-cart-holder $class" data-cart="$cart"></div>
-EOT;
+    </script>
+    <div class="swidget-cart-holder $class" data-cart="$cart"></div>
+    EOT;
 
-  return $out;
+    return $out;
   }
 
   function swidget_addtocart($atts = [], $content = null, $tag='')
@@ -159,20 +171,19 @@ EOT;
     $class = "swidget_$site" . "_" . $item;
 
     $out = <<<EOT
-  <script>
+    <script>
     jQuery( document ).ready(function(){
       jQuery(".$class").swAddToCart($cart, $site, $item);
     });
-  </script>
-  <div class="swidget-holder $class" data-cart="$cart"></div>
-EOT;
+    </script>
+    <div class="swidget-holder $class" data-cart="$cart"></div>
+    EOT;
 
     return $out;
   }
 
   add_shortcode('swcart', 'swidget_cart');
   add_shortcode('swaddtocart', 'swidget_addtocart');
-
 }
 
 function curl_call($url)
