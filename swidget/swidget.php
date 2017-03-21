@@ -57,7 +57,7 @@ function init_checkout()
     });
     </script>
     <div class="swidget-holder $class"></div>
-    EOT;
+EOT;
 
     return $out;
   }
@@ -149,7 +149,7 @@ function init_cart()
     });
     </script>
     <div class="swidget-cart-holder $class" data-cart="$cart"></div>
-    EOT;
+EOT;
 
     return $out;
   }
@@ -178,7 +178,7 @@ function init_cart()
     });
     </script>
     <div class="swidget-holder $class" data-cart="$cart"></div>
-    EOT;
+EOT;
 
     return $out;
   }
