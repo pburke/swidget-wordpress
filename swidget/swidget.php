@@ -113,15 +113,16 @@ function init_cart()
 
   function saveCart($name, $cart)
   {
+    $updateName = $name . "_update";
     if(isset($_COOKIE[$name]))
     {
-      if(isset($_COOKIE[$name . "_update"]))
+      if(isset($_COOKIE[$updateName]))
       {
-        $lastUpdate = intval($_COOKIE[$name . "_update"]);
+        $lastUpdate = intval($_COOKIE[$updateName]);
         if(abs($lastUpdate - time()) <= 30*1000) return $_COOKIE[$name];
       }
     }
-    setcookie($name . "_update", time(), time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
+    setcookie($updateName, time(), time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
     setcookie($name, $cart, time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
     return $cart;
   }
