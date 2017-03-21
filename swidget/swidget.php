@@ -3,7 +3,7 @@
 Plugin Name: Swidget
 Plugin URI: https://github.com/CMP-Studio/swidget-wordpress
 Description: Siriusware Widget
-Version: 0.6
+Version: 0.7
 Author: Carnegie Museums of Pittsburgh
 Author URI: http://www.carnegiemuseums.org
 License: GPLv2 or later
@@ -24,7 +24,7 @@ if( ! function_exists('swidget_shortcodes_init') ){
   }
   function swidget_shortcodes_init()
   {
-    setcookie("swidget_version", "0.6.001", time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
+    setcookie("swidget_version", "0.7.000", time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
     init_checkout();
     init_cart();
   }
@@ -68,65 +68,10 @@ EOT;
 }
 
 //Cart based functions
+
+
 function init_cart()
 {
-  function getCart($site)
-  {
-    $name = "swidget_cart_$site";
-    if(!isset($_COOKIE[$name]))
-    {
-      //No cart: must create one
-      $url = getURL("/api/v1/cart/create?site=$site");
-      $result = curl_call($url);
-      $json = json_decode($result);
-
-      if($json->success)
-      {
-        return saveCart($name, $json->cart);
-      }
-    }
-    else
-    {
-      $cart = $_COOKIE[$name];
-      $url = getURL("/api/v1/cart/check?site=$site&cart=$cart&recreate=true");
-      $result = curl_call($url);
-      $json = json_decode($result);
-
-      if($json->success)
-      {
-        if($json->valid)
-        {
-          //Cart is still valid
-          return $cart;
-        }
-        else {
-          if(isset($json->cart))
-          {
-            return saveCart($name, $json->cart);
-          }
-        }
-      }
-    }
-
-    return null;
-  }
-
-  function saveCart($name, $cart)
-  {
-    $updateName = $name . "_update";
-    if(isset($_COOKIE[$name]))
-    {
-      if(isset($_COOKIE[$updateName]))
-      {
-        $lastUpdate = intval($_COOKIE[$updateName]);
-        if(abs($lastUpdate - time()) <= 30*1000) return $_COOKIE[$name];
-      }
-    }
-    setcookie($updateName, time(), time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
-    setcookie($name, $cart, time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
-    return $cart;
-  }
-
   function swidget_cart($atts = [], $content = null, $tag='')
   {
     $atts = array_change_key_case((array)$atts, CASE_LOWER);
@@ -185,6 +130,67 @@ EOT;
 
   add_shortcode('swcart', 'swidget_cart');
   add_shortcode('swaddtocart', 'swidget_addtocart');
+}
+
+//Helper functions
+function getCart($site)
+{
+  $name = "swidget_cart_$site";
+  if(!isset($_COOKIE[$name]))
+  {
+    //No cart: must create one
+    $url = getURL("/api/v1/cart/create?site=$site");
+    $result = curl_call($url);
+    $json = json_decode($result);
+
+    if($json->success)
+    {
+      return saveCart($name, $json->cart);
+    }
+  }
+  else
+  {
+    $cart = $_COOKIE[$name];
+    $url = getURL("/api/v1/cart/check?site=$site&cart=$cart&recreate=true");
+    $result = curl_call($url);
+    $json = json_decode($result);
+
+    if($json->success)
+    {
+      if($json->valid)
+      {
+        //Cart is still valid
+        return $cart;
+      }
+      else {
+        if(isset($json->cart))
+        {
+          return saveCart($name, $json->cart);
+        }
+      }
+    }
+  }
+
+  return null;
+}
+
+function saveCart($name, $cart)
+{
+  $updateName = $name . "_update";
+  if(isset($_COOKIE[$name]))
+  {
+    if(isset($_COOKIE[$updateName]))
+    {
+      $lastUpdate = intval($_COOKIE[$updateName]);
+      if(abs($lastUpdate - time()) <= 100) return $_COOKIE[$name];
+    }
+  }
+  setcookie($updateName, time(), 0, "/", COOKIE_DOMAIN );
+  setcookie($name, $cart, 0, "/", COOKIE_DOMAIN );
+  //for the current page
+  $_COOKIE[$updateName] = time();
+  $_COOKIE[$name] = $cart;
+  return $cart;
 }
 
 function curl_call($url)
