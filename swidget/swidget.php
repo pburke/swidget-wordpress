@@ -8,6 +8,7 @@ Author: Carnegie Museums of Pittsburgh
 Author URI: http://www.carnegiemuseums.org
 License: GPLv2 or later
 ******************************************************************************/
+require_once dirname( __FILE__ ) . '/settingsPage.php';
 
 function getURL($path)
 {
