@@ -3,7 +3,7 @@
 Plugin Name: Swidget
 Plugin URI: https://github.com/CMP-Studio/swidget-wordpress
 Description: Siriusware Widget
-Version: 0.7
+Version: 0.8
 Author: Carnegie Museums of Pittsburgh
 Author URI: http://www.carnegiemuseums.org
 License: GPLv2 or later
@@ -25,12 +25,56 @@ if( ! function_exists('swidget_shortcodes_init') ){
   }
   function swidget_shortcodes_init()
   {
-    setcookie("swidget_version", "0.7.000", time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
+    setcookie("swidget_version", "0.08.002", time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
     init_checkout();
     init_cart();
   }
   add_action('init', 'swidget_shortcodes_init');
   add_action('wp_enqueue_scripts', 'swidget_scripts_init');
+}
+
+function getSettings()
+{
+  $jsonSettings = array();
+  $swidgetMappings = array(
+    "sw_date_format" => "dateFormat",
+    "sw_low_qty" => "lowQty",
+    "sw_display_product_name" => "displayName",
+    "sw_msg_loading" => "messageLoading ",
+    "sw_msg_expired" => "messageExpired",
+    "sw_msg_low_qty" => "messageLowQty",
+    "sw_msg_sold_out" => "messageSoldOut",
+    "sw_msg_add_to_cart" => "messageAddToCart",
+    "sw_txt_free" => "txtFreeItem",
+    "sw_txt_fee" => "txtAdditionalFee",
+    "sw_txt_checkout" => "txtCheckoutBtn",
+    "sw_txt_checkout_cart" => "txtCartCheckoutBtn",
+    "sw_txt_cart" => "txtAddToCartBtn",
+    "sw_txt_discount" => "txtDiscount",
+    "sw_txt_member_discount" => "txtMemberDisc",
+  );
+
+  foreach ($swidgetMappings as $key => $value) {
+    if("" !== get_option($key, ""))
+    {
+      if($key == "sw_display_product_name")
+      {
+        if(get_option($key) == "false")
+        {
+          $jsonSettings[$value] = false;
+        }
+      }
+      else if($key == "sw_low_qty")
+      {
+        $jsonSettings[$value] = intval(get_option($key));
+      }
+      else
+      {
+        $jsonSettings[$value] = get_option($key);
+      }
+    }
+  }
+  return json_encode($jsonSettings);
 }
 
 
@@ -49,12 +93,13 @@ function init_checkout()
     //Start Output
     $site = intval($co_atts["site"]);
     $item = intval($co_atts["item"]);
+    $settings = getSettings();
     $class = "swidget_$site_$item";
 
     $out = <<<EOT
     <script>
     jQuery( document ).ready(function(){
-      jQuery(".$class").swQuickCheckout($site, $item);
+      jQuery(".$class").swQuickCheckout($site, $item, $settings);
     });
     </script>
     <div class="swidget-holder $class"></div>
@@ -81,6 +126,7 @@ function init_cart()
     ], $atts, $tag);
 
     $site = intval($co_atts["site"]);
+    $settings = getSettings();
 
     $cart = getCart($site);
 
@@ -91,7 +137,7 @@ function init_cart()
     $out = <<<EOT
     <script>
     jQuery( document ).ready(function(){
-      jQuery(".$class").swCart($cart);
+      jQuery(".$class").swCart($cart, $settings);
     });
     </script>
     <div class="swidget-cart-holder $class" data-cart="$cart"></div>
@@ -109,6 +155,7 @@ EOT;
       "item" => null
     ], $atts, $tag);
     //Start Output
+    $settings = getSettings();
     $site = intval($co_atts["site"]);
     $item = intval($co_atts["item"]);
     $cart = getCart($site);
@@ -120,7 +167,7 @@ EOT;
     $out = <<<EOT
     <script>
     jQuery( document ).ready(function(){
-      jQuery(".$class").swAddToCart($cart, $site, $item);
+      jQuery(".$class").swAddToCart($cart, $site, $item, $settings);
     });
     </script>
     <div class="swidget-holder $class" data-cart="$cart"></div>
