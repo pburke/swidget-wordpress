@@ -30,6 +30,7 @@ To install download this project and copy the "swidget" folder into your wordpre
 #### Option Reference
   * Date Format - How dates are displayed in placeholders.  Uses the moment.js library.  [Info on formats found here](http://momentjs.com/docs/#/displaying/format/)
   * Display Product Name - Show the name of the product (defaults to true)
+  * Open checkout in - Open the checkout page in a new tab/window
   * Low Qty - The point when the *low quantity* message shows
   * **Message - Expired** - The message that is displayed when the item is no longer on sale
   * Message - Loading - The message that displays while the tickets are loading
