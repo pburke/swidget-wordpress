@@ -26,6 +26,7 @@ To install download this project and copy the "swidget" folder into your wordpre
 [swaddtocart site="siteID" item="itemID"]
 ```
 ### Options
+All options can be managed on the WordPress admin page for the swidget plugin.
 
 #### Option Reference
   * Date Format - How dates are displayed in placeholders.  Uses the moment.js library.  [Info on formats found here](http://momentjs.com/docs/#/displaying/format/)
