@@ -25,7 +25,7 @@ if( ! function_exists('swidget_shortcodes_init') ){
   }
   function swidget_shortcodes_init()
   {
-    setcookie("swidget_version", "0.08.002", time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
+    setcookie("swidget_version", "0.08.004", time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
     init_checkout();
     init_cart();
   }
@@ -40,6 +40,7 @@ function getSettings()
     "sw_date_format" => "dateFormat",
     "sw_low_qty" => "lowQty",
     "sw_display_product_name" => "displayName",
+    "sw_open_tab" => "openInNewTab",
     "sw_msg_loading" => "messageLoading ",
     "sw_msg_expired" => "messageExpired",
     "sw_msg_low_qty" => "messageLowQty",
@@ -57,11 +58,15 @@ function getSettings()
   foreach ($swidgetMappings as $key => $value) {
     if("" !== get_option($key, ""))
     {
-      if($key == "sw_display_product_name")
+      if($key == "sw_display_product_name" || $key == "sw_open_tab")
       {
         if(get_option($key) == "false")
         {
           $jsonSettings[$value] = false;
+        }
+        else if (get_option($key) == "true")
+        {
+          $jsonSettings[$value] = true;
         }
       }
       else if($key == "sw_low_qty")
