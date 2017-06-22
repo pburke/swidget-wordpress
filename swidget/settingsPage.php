@@ -9,6 +9,7 @@ add_action( 'admin_init', function() {
   register_setting( 'swidget-wordpress', 'sw_date_format' );
   register_setting( 'swidget-wordpress', 'sw_low_qty' );
   register_setting( 'swidget-wordpress', 'sw_display_product_name' );
+  register_setting( 'swidget-wordpress', 'sw_open_tab' );
 //Messages
 $msgSettings = array(
   "sw_msg_loading" => "Loading",
@@ -92,6 +93,21 @@ function generate_swidget_config_page()
          </label><br/>
          <label>
            <input id="sw_display_product_name" name="sw_display_product_name" type="radio" value = "false" <?php echo esc_attr( get_option('sw_display_product_name') ) == 'false' ? 'checked="checked"' : ''; ?>  /> No
+         </label>
+         </td>
+       </tr>
+
+       <!-- Open in new tab-->
+       <tr>
+         <td>
+           <label for="sw_open_tab">Open checkout in:</label>
+         </td>
+         <td>
+           <label>
+           <input id="sw_open_tab" name="sw_open_tab" type="radio" value = "false"  <?php echo esc_attr( get_option('sw_open_tab') ) != 'true' ? 'checked="checked"' : ''; ?> /> Same Tab
+         </label><br/>
+         <label>
+           <input id="sw_open_tab" name="sw_open_tab" type="radio" value = "true" <?php echo esc_attr( get_option('sw_open_tab') ) == 'true' ? 'checked="checked"' : ''; ?>  /> New Tab
          </label>
          </td>
        </tr>
