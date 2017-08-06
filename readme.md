@@ -46,7 +46,7 @@ All options can be managed on the WordPress admin page for the swidget plugin.
   * **Sold Out** - The message that displays when the item is sold out
   * Add To Cart - A message for when an item is added to cart (Note: only for swaddtocart widgets)
 
-#####Text Modification
+##### Text Modification
 
   * **Free** - The text to display when an item is free (Replaces $0.00).
   * **Additional Fee** - The text for additional fees
