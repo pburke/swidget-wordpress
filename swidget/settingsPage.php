@@ -1,6 +1,32 @@
 <?php
 
 
+function getMessageSettings()
+{
+  return array(
+    "sw_msg_loading" => "Loading",
+    "sw_msg_too_early" => "Not yet on sale",
+    "sw_msg_offline_only" => "Offline Sales Only",
+    "sw_msg_expired" => "Expired",
+    "sw_msg_low_qty" => "Low Quantity",
+    "sw_msg_sold_out" => "Sold Out",
+    "sw_msg_add_to_cart" => "Add to Cart"
+  );
+}
+
+function getTextSettings()
+{
+  return array (
+    "sw_txt_free" => "Free Item",
+    "sw_txt_fee" => "Additional Fee",
+    "sw_txt_checkout" => "Checkout Button (Quick)",
+    "sw_txt_cart" => "Checkout Button (Cart)",
+    "sw_txt_checkout_cart" => "Add To Cart Button",
+    "sw_txt_discount" => "Discount",
+    "sw_txt_member_discount" => "Member Discount",
+  );
+}
+
 add_action('admin_menu', function() {
   add_options_page( 'Swidget Wordpress Config', 'Swidget Wordpress', 'manage_options', 'swidget', 'generate_swidget_config_page' );
 });
@@ -11,26 +37,12 @@ add_action( 'admin_init', function() {
   register_setting( 'swidget-wordpress', 'sw_display_product_name' );
   register_setting( 'swidget-wordpress', 'sw_open_tab' );
 //Messages
-$msgSettings = array(
-  "sw_msg_loading" => "Loading",
-  "sw_msg_expired" => "Expired",
-  "sw_msg_low_qty" => "Low Quantity",
-  "sw_msg_sold_out" => "Sold Out",
-  "sw_msg_add_to_cart" => "Add to Cart",
-);
+$msgSettings = getMessageSettings();
 foreach ($msgSettings as $key => $value) {
   register_setting( 'swidget-wordpress', $key );
 }
 //Text
-$txtSettings = array (
-  "sw_txt_free" => "Free Item",
-  "sw_txt_fee" => "Additional Fee",
-  "sw_txt_checkout" => "Checkout Button (Quick)",
-  "sw_txt_checkout_cart" => "Checkout Button (Cart)",
-  "sw_txt_cart" => "Add To Cart Button",
-  "sw_txt_discount" => "Discount",
-  "sw_txt_member_discount" => "Member Discount",
-);
+$txtSettings = getTextSettings();
   foreach ($txtSettings as $key => $value) {
     register_setting( 'swidget-wordpress', $key );
   }
@@ -38,22 +50,8 @@ $txtSettings = array (
 
 function generate_swidget_config_page()
 {
-  $msgSettings = array(
-    "sw_msg_loading" => "Loading",
-    "sw_msg_expired" => "Expired",
-    "sw_msg_low_qty" => "Low Quantity",
-    "sw_msg_sold_out" => "Sold Out",
-    "sw_msg_add_to_cart" => "Add to Cart",
-  );
-  $txtSettings = array (
-    "sw_txt_free" => "Free Item",
-    "sw_txt_fee" => "Additional Fee",
-    "sw_txt_checkout" => "Checkout Button (Quick)",
-    "sw_txt_checkout_cart" => "Checkout Button (Cart)",
-    "sw_txt_cart" => "Add To Cart Button",
-    "sw_txt_discount" => "Discount",
-    "sw_txt_member_discount" => "Member Discount",
-  );
+  $msgSettings = getMessageSettings();
+  $txtSettings = getTextSettings();
   ?>
   <div class="wrap">
     <h1>Swidget Settings</h1>
