@@ -4,7 +4,18 @@ This is a wordpress plugin to display swidgets.  It simplifies the process for a
 
 ## Install
 
-To install download this project and copy the "swidget" folder into your wordpress plugin directory located at /wp-content/plugins
+### Wordpress Admin
+
++ Open your wordpress admin
++ Go to Plugins
++ If you have a previous version of Swidget deactivate and remove it
++ Click "Add New"
++ Click "Upload Plugin"
++ Upload the swidget.zip attached to the release here on GitHub.
+
+### FTP
+
+To install download this project and FTP the "swidget" folder into your wordpress plugin directory located at /wp-content/plugins
 
 ## Shortcodes
 
