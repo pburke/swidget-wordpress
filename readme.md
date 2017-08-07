@@ -26,6 +26,7 @@ To install download this project and copy the "swidget" folder into your wordpre
 [swaddtocart site="siteID" item="itemID"]
 ```
 ### Options
+
 All options can be managed on the WordPress admin page for the swidget plugin.
 
 #### Option Reference
@@ -33,17 +34,27 @@ All options can be managed on the WordPress admin page for the swidget plugin.
   * Display Product Name - Show the name of the product (defaults to true)
   * Open checkout in - Open the checkout page in a new tab/window
   * Low Qty - The point when the *low quantity* message shows
-  * **Message - Expired** - The message that is displayed when the item is no longer on sale
-  * Message - Loading - The message that displays while the tickets are loading
-  * **Message - Low Qty** - The message that displays when there is low quantity
-  * **Message - Sold Out** - The message that displays when the item is sold out
-  * Message - Add To Cart - A message for when an item is added to cart (Note: only for swaddtocart widgets)
-  * **Text - Additional Fee** - The text for additional fees
-  * **Text - Checkout Button** - The text for the checkout button (2 settings, for quick checkout and cart checkout)
-  * Text - Cart Checkout Button - Text for the cart widget's checkout button
-  * **Text - Discount** - The text for discounts
-  * **Text - Member Discount** - The text to show how much one would pay if they are a member
-  * **Text - Free** - The text to display when an item is free.
+  * Display Product Name - Show the name of the product (defaults to Yes)
+
+##### Messages
+
+  * Loading - The message that displays while the tickets are loading
+  * **Not yet on sale** - Message displayed if the product is not yet available to purchase
+  * **Offline sales only** - Message displayed when the item is available to be sold in Siriusware but *not* with e-commerce
+  * **Expired** - The message that is displayed when the item is no longer on sale
+  * **Low Qty** - The message that displays when there is low quantity
+  * **Sold Out** - The message that displays when the item is sold out
+  * Add To Cart - A message for when an item is added to cart (Note: only for swaddtocart widgets)
+
+##### Text Modification
+
+  * **Free** - The text to display when an item is free (Replaces $0.00).
+  * **Additional Fee** - The text for additional fees
+  * **Checkout Button** - The text for the checkout button. **Note:** There are separate entries for the quick widget and the cart widget
+  * Add to Cart Button - Text for the cart widget's checkout button
+  * **Discount** - The text for discounts
+  * **Member Discount** - The text to show how much one would pay if they are a member
+
 
 #### Placeholders
 
