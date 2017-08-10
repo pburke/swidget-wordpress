@@ -3,7 +3,7 @@
 Plugin Name: Swidget
 Plugin URI: https://github.com/CMP-Studio/swidget-wordpress
 Description: Siriusware Widget
-Version: 0.9
+Version: 0.10.000
 Author: Carnegie Museums of Pittsburgh
 Author URI: http://www.carnegiemuseums.org
 License: GPLv2 or later
@@ -19,16 +19,23 @@ function getURL($path)
 
 //Initialize
 if( ! function_exists('swidget_shortcodes_init') ){
+  function swidget_session_init()
+  {
+    if ((function_exists('session_status')  && session_status() !== PHP_SESSION_ACTIVE)
+    || !session_id()) {
+      session_start();
+    }
+  }
   function swidget_scripts_init()
   {
     wp_enqueue_script('swidget-script',getURL("/widget/ecommerce-widget.js"),array( 'jquery' ));
   }
   function swidget_shortcodes_init()
   {
-    setcookie("swidget_version", "0.09.000", time() + DAY_IN_SECONDS, "/", COOKIE_DOMAIN );
     init_checkout();
     init_cart();
   }
+  add_action('init', 'swidget_session_init', 1);
   add_action('init', 'swidget_shortcodes_init');
   add_action('wp_enqueue_scripts', 'swidget_scripts_init');
 }
@@ -191,7 +198,7 @@ EOT;
 function getCart($site)
 {
   $name = "swidget_cart_$site";
-  if(!isset($_COOKIE[$name]))
+  if(!isset($_SESSION[$name]))
   {
     //No cart: must create one
     $url = getURL("/api/v1/cart/create?site=$site");
@@ -205,7 +212,7 @@ function getCart($site)
   }
   else
   {
-    $cart = $_COOKIE[$name];
+    $cart = $_SESSION[$name];
     $url = getURL("/api/v1/cart/check?site=$site&cart=$cart&recreate=true");
     $result = curl_call($url);
     $json = json_decode($result);
@@ -232,19 +239,17 @@ function getCart($site)
 function saveCart($name, $cart)
 {
   $updateName = $name . "_update";
-  if(isset($_COOKIE[$name]))
+  if(isset($_SESSION[$name]))
   {
-    if(isset($_COOKIE[$updateName]))
+    if(isset($_SESSION[$updateName]))
     {
-      $lastUpdate = intval($_COOKIE[$updateName]);
-      if(abs($lastUpdate - time()) <= 100) return $_COOKIE[$name];
+      $lastUpdate = intval($_SESSION[$updateName]);
+      if(abs($lastUpdate - time()) <= 100) return $_SESSION[$name];
     }
   }
-  setcookie($updateName, time(), 0, "/", COOKIE_DOMAIN );
-  setcookie($name, $cart, 0, "/", COOKIE_DOMAIN );
-  //for the current page
-  $_COOKIE[$updateName] = time();
-  $_COOKIE[$name] = $cart;
+  $_SESSION[$updateName] = time();
+  $_SESSION[$name] = $cart;
+
   return $cart;
 }
 
