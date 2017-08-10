@@ -62,6 +62,7 @@ All options can be managed on the WordPress admin page for the swidget plugin.
   * **Free** - The text to display when an item is free (Replaces $0.00).
   * **Additional Fee** - The text for additional fees
   * **Checkout Button** - The text for the checkout button. **Note:** There are separate entries for the quick widget and the cart widget
+  * **Checkout Button (Free item)** - This replaces the **quick** checkout text if all items in the widget are free
   * Add to Cart Button - Text for the cart widget's checkout button
   * **Discount** - The text for discounts
   * **Member Discount** - The text to show how much one would pay if they are a member

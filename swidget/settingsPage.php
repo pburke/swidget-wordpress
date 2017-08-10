@@ -21,7 +21,8 @@ function getTextSettings()
     "sw_txt_fee" => "Additional Fee",
     "sw_txt_checkout" => "Checkout Button (Quick)",
     "sw_txt_cart" => "Checkout Button (Cart)",
-    "sw_txt_checkout_cart" => "Add To Cart Button",
+    "sw_txt_free_checkout" => "Checkout Button (Free item)",
+    "sw_txt_add_to_cart" => "Add To Cart Button",
     "sw_txt_discount" => "Discount",
     "sw_txt_member_discount" => "Member Discount",
   );
