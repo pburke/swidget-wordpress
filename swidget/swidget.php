@@ -3,7 +3,7 @@
 Plugin Name: Swidget
 Plugin URI: https://github.com/CMP-Studio/swidget-wordpress
 Description: Siriusware Widget
-Version: 0.10.001
+Version: 0.10.002
 Author: Carnegie Museums of Pittsburgh
 Author URI: http://www.carnegiemuseums.org
 License: GPLv2 or later
@@ -56,6 +56,7 @@ function getSettings()
     "sw_msg_too_early" => "messageTooEarly",
     "sw_msg_offline_only" => "messageOffline",
     "sw_txt_free" => "txtFreeItem",
+    "sw_txt_free_checkout" => "txtFreeCheckout",
     "sw_txt_fee" => "txtAdditionalFee",
     "sw_txt_checkout" => "txtCheckoutBtn",
     "sw_txt_add_to_cart" => "txtAddToCartBtn",
