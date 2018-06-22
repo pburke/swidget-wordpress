@@ -25,6 +25,7 @@ function getTextSettings()
     "sw_txt_add_to_cart" => "Add To Cart Button",
     "sw_txt_discount" => "Discount",
     "sw_txt_member_discount" => "Member Discount",
+	"sw_fill_dates" => "true"
   );
 }
 
