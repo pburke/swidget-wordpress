@@ -69,7 +69,7 @@ function getSettings()
   foreach ($swidgetMappings as $key => $value) {
     if("" !== get_option($key, ""))
     {
-      if($key == "sw_display_product_name" || $key == "sw_open_tab")
+      if($key == "sw_display_product_name" || $key == "sw_open_tab" || $key == "sw_fill_dates")
       {
         if(get_option($key) == "false")
         {
