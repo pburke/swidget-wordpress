@@ -122,10 +122,37 @@ EOT;
 
     return $out;
   }
+  
+  function swidget_checkouttimed($atts = [], $content = null, $tag='')
+  {
+    // normalize attribute keys, lowercase
+    $atts = array_change_key_case((array)$atts, CASE_LOWER);
+    $co_atts = shortcode_atts([
+      "site" => null,
+      "group" => null
+    ], $atts, $tag);
+    //Start Output
+    $site = intval($co_atts["site"]);
+    $group = intval($co_atts["group"]);
+    $settings = getSettings();
+    $class = "swidget_$site_$group";
+
+    $out = <<<EOT
+    <script>
+    jQuery( document ).ready(function(){
+      jQuery(".$class").swTTQuickCheckout($site, $group, $settings);
+    });
+    </script>
+    <div class="swidget-holder $class"></div>
+EOT;
+
+    return $out;
+  }
 
 
 
   add_shortcode('swcheckout', 'swidget_checkout');
+  add_shortcode('swcheckouttimed', 'swidget_checkouttimed');
 }
 
 //Cart based functions
@@ -190,9 +217,40 @@ EOT;
 
     return $out;
   }
+  
+  function swidget_addtocarttimed($atts = [], $content = null, $tag='')
+  {
+    // normalize attribute keys, lowercase
+    $atts = array_change_key_case((array)$atts, CASE_LOWER);
+    $co_atts = shortcode_atts([
+      "site" => null,
+      "group" => null
+    ], $atts, $tag);
+    //Start Output
+    $settings = getSettings();
+    $site = intval($co_atts["site"]);
+    $group = intval($co_atts["group"]);
+    $cart = getCart($site);
+
+    if(!isset($cart)) return "";
+
+    $class = "swidget_$site" . "_" . $group;
+
+    $out = <<<EOT
+    <script>
+    jQuery( document ).ready(function(){
+      jQuery(".$class").swTTAddToCart($cart, $site, $group, $settings);
+    });
+    </script>
+    <div class="swidget-holder $class" data-cart="$cart"></div>
+EOT;
+
+    return $out;
+  }
 
   add_shortcode('swcart', 'swidget_cart');
   add_shortcode('swaddtocart', 'swidget_addtocart');
+  add_shortcode('swaddtocarttimed', 'swidget_addtocarttimed');
 }
 
 //Helper functions
