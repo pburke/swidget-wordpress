@@ -25,6 +25,12 @@ To install download this project and FTP the "swidget" folder into your wordpres
 [swcheckout site="siteID" item="itemID"]
 ```
 
+### Quick Checkout Timed
+
+```
+[swcheckouttimed site="siteID" group="groupCode"]
+```
+
 ### Cart
 
 ```
@@ -35,6 +41,12 @@ To install download this project and FTP the "swidget" folder into your wordpres
 
 ```
 [swaddtocart site="siteID" item="itemID"]
+```
+
+### Add to Cart Timed
+
+```
+[swaddtocarttimed site="siteID" group="groupCode"]
 ```
 ### Options
 
