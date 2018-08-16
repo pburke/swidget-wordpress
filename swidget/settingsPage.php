@@ -24,7 +24,9 @@ function getTextSettings()
     "sw_txt_free_checkout" => "Checkout Button (Free item)",
     "sw_txt_add_to_cart" => "Add To Cart Button",
     "sw_txt_discount" => "Discount",
-    "sw_txt_member_discount" => "Member Discount"
+    "sw_txt_member_discount" => "Member Discount",
+    "sw_txt_select_new_date" => "Select a different date",
+    "sw_txt_select_new_time" => "Select a different time"
   );
 }
 
