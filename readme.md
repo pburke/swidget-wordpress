@@ -78,7 +78,8 @@ All options can be managed on the WordPress admin page for the swidget plugin.
   * Add to Cart Button - Text for the cart widget's checkout button
   * **Discount** - The text for discounts
   * **Member Discount** - The text to show how much one would pay if they are a member
-
+  * Select New Date - The label text for the date selector (timed ticketing)
+  * Select New Time - The label text for the time selector (timed ticketing)
 
 #### Placeholders
 
