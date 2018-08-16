@@ -63,7 +63,9 @@ function getSettings()
     "sw_txt_cart" => "txtCartCheckoutBtn",
     "sw_txt_discount" => "txtDiscount",
     "sw_txt_member_discount" => "txtMemberDisc",
-	"sw_fill_dates" => "fillDates"
+    "sw_fill_dates" => "fillDates",
+    "sw_txt_select_new_date" => "txtSelectNewDate",
+    "sw_txt_select_new_time" => "txtSelectNewTime"
   );
 
   foreach ($swidgetMappings as $key => $value) {
