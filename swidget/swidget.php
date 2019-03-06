@@ -28,7 +28,7 @@ if( ! function_exists('swidget_shortcodes_init') ){
   }
   function swidget_scripts_init()
   {
-    wp_enqueue_script('swidget-script',getURL("/widget/ecommerce-widget.js"),array( 'jquery' ));
+    wp_enqueue_script('swidget-script',getURL("/widget/ecommerce-widget.js"),array( 'jquery' ), false, false);
   }
   function swidget_shortcodes_init()
   {
