@@ -28,7 +28,14 @@ if( ! function_exists('swidget_shortcodes_init') ){
   }
   function swidget_scripts_init()
   {
-    wp_enqueue_script('swidget-script',getURL("/widget/ecommerce-widget.js"),array( 'jquery' ));
+    wp_enqueue_script('swidget-script', getURL("/widget/ecommerce-widget.js"), array('jquery'));
+    add_filter('script_loader_tag', 'async_swidget', 10, 2);
+    function async_swidget($tag, $handle) {
+      if ('swidget-script' !== $handle) {
+        return $tag;
+      }
+      return str_replace(' src', ' async src', $tag);
+    }
   }
   function swidget_shortcodes_init()
   {
