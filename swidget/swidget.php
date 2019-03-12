@@ -34,7 +34,7 @@ if( ! function_exists('swidget_shortcodes_init') ){
       if ('swidget-script' !== $handle) {
         return $tag;
       }
-      return str_replace(' src', ' async src', $tag);
+      return str_replace(' src', ' id="swidget-script" async src', $tag);
     }
   }
   function swidget_shortcodes_init()
@@ -124,7 +124,12 @@ function init_checkout()
     $out = <<<EOT
     <script>
     jQuery( document ).ready(function(){
-      jQuery(".$class").swQuickCheckout($site, $item, $settings);
+      jQuery("#swidget-script").one('load swidgetLoaded', function() {
+        jQuery(".$class").swQuickCheckout($site, $item, $settings);
+      });
+      if (jQuery.fn.swQuickCheckout) {
+        jQuery("#swidget-script").trigger('swidgetLoaded');
+      }
     });
     </script>
     <div class="swidget-holder $class"></div>
@@ -150,7 +155,12 @@ EOT;
     $out = <<<EOT
     <script>
     jQuery( document ).ready(function(){
-      jQuery(".$class").swTTQuickCheckout($site, $group, $settings);
+      jQuery("#swidget-script").one('load swidgetLoaded', function() {
+        jQuery(".$class").swTTQuickCheckout($site, $group, $settings);
+      });
+      if (jQuery.fn.swTTQuickCheckout) {
+        jQuery("#swidget-script").trigger('swidgetLoaded');
+      }
     });
     </script>
     <div class="swidget-holder $class"></div>
@@ -189,7 +199,12 @@ function init_cart()
     $out = <<<EOT
     <script>
     jQuery( document ).ready(function(){
-      jQuery(".$class").swCart($cart, $settings);
+      jQuery("#swidget-script").one('load swidgetLoaded', function() {
+        jQuery(".$class").swCart($cart, $settings);
+      });
+      if (jQuery.fn.swCart) {
+        jQuery("#swidget-script").trigger('swidgetL
+      }
     });
     </script>
     <div class="swidget-cart-holder $class" data-cart="$cart"></div>
@@ -219,7 +234,12 @@ EOT;
     $out = <<<EOT
     <script>
     jQuery( document ).ready(function(){
-      jQuery(".$class").swAddToCart($cart, $site, $item, $settings);
+      jQuery("#swidget-script").one('load swidgetLoaded', function() {
+        jQuery(".$class").swAddToCart($cart, $site, $item, $settings);
+      });
+      if (jQuery.fn.swAddToCart) {
+        jQuery("#swidget-script").trigger('swidgetLoaded');
+      }
     });
     </script>
     <div class="swidget-holder $class" data-cart="$cart"></div>
@@ -249,7 +269,12 @@ EOT;
     $out = <<<EOT
     <script>
     jQuery( document ).ready(function(){
-      jQuery(".$class").swTTAddToCart($cart, $site, $group, $settings);
+      jQuery("#swidget-script").one('load swidgetLoaded', function() {
+        jQuery(".$class").swTTAddToCart($cart, $site, $group, $settings);
+      });
+      if (jQuery.fn.swTTAddToCart) {
+        jQuery("#swidget-script").trigger('swidgetLoaded');
+      }
     });
     </script>
     <div class="swidget-holder $class" data-cart="$cart"></div>
